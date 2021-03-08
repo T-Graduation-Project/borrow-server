@@ -2,14 +2,14 @@ package service
 
 import (
 	"github.com/T-Graduation-Project/borrow-server/app/dao"
-	proto "github.com/T-Graduation-Project/proto/borrow_server"
+	"github.com/T-Graduation-Project/borrow-server/protobuf"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/util/gconv"
 	"time"
 )
 
-func GetBookList() (*proto.GetBookListRsp, error) {
-	rsp := new(proto.GetBookListRsp)
+func GetBookList() (*borrow_server.GetBookListRsp, error) {
+	rsp := new(borrow_server.GetBookListRsp)
 	data := dao.SelectBook("default", "")
 	dataMap := g.Map{
 		"Data": data,
@@ -20,14 +20,14 @@ func GetBookList() (*proto.GetBookListRsp, error) {
 	return rsp, nil
 }
 
-func BorrowBook(req proto.BorrowBookReq) (*proto.BorrowBookRsp, error) {
-	rsp := new(proto.BorrowBookRsp)
+func BorrowBook(req borrow_server.BorrowBookReq) (*borrow_server.BorrowBookRsp, error) {
+	rsp := new(borrow_server.BorrowBookRsp)
 	borrowInfo := g.Map{
 		"book_id":   req.BookId,
 		"user_id":   req.UserId,
 		"lend_date": time.Now(),
 	}
-	err := dao.SaveBorroList("default", borrowInfo)
+	err := dao.SaveBorrowList("default", borrowInfo)
 	if err != nil {
 		return nil, err
 	}

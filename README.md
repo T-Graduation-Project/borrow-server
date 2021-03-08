@@ -26,3 +26,4 @@ docker run --rm -it -p 58080:58080 csighub.tencentyun.com/urftian/tendoc-oms-ser
 docker login 
 docker push csighub.tencentyun.com/urftian/tendoc-oms-server-go
 ~~~
+

@@ -1,6 +1,6 @@
 # HTTP Server.
 [server]
-	Address        = ":8199"
+	Address        = ":58080"
 	ServerAgent    = "borrow-server"
 	LogPath        = "/tmp/log/server"
 	NameToUriType  = 2
@@ -14,7 +14,7 @@
 
 [database]
     [[database.default]]
-        link  = "mysql:root:123456@tcp(9.135.9.19:3306)/library"
+        link  = "mysql:root:123456@tcp(159.75.125.159:3307)/library"
         role  = "master"
         debug = true
 

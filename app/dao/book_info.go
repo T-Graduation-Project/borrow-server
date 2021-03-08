@@ -31,6 +31,7 @@ func SelectBook(dbEnv string, namespace string) gdb.Result {
 	if namespace == "" {
 		*r, _ = db.Table("book_info").All()
 	} else {
+		// TODO
 		*r, _ = db.Table(
 			"cmd_info ci,proto_file_info pfi").Where(
 			"pfi.namespace", namespace).Where(
@@ -40,7 +41,7 @@ func SelectBook(dbEnv string, namespace string) gdb.Result {
 	return *r
 }
 
-func SaveBorroList(dbEnv string, p g.Map) error {
+func SaveBorrowList(dbEnv string, p g.Map) error {
 	db := g.DB(dbEnv)
 	_, err := db.Table("borrow_list").Save(p)
 	if err != nil {
