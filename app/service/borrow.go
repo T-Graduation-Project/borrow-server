@@ -1,35 +1,40 @@
 package service
 
 import (
+	"fmt"
 	"github.com/T-Graduation-Project/borrow-server/app/dao"
 	"github.com/T-Graduation-Project/borrow-server/protobuf"
 	"github.com/gogf/gf/frame/g"
-	"github.com/gogf/gf/util/gconv"
+	"github.com/gogf/gf/os/gtime"
 	"time"
 )
 
-func GetBookList() (*borrow_server.GetBookListRsp, error) {
-	rsp := new(borrow_server.GetBookListRsp)
-	data := dao.SelectBook("default", "")
-	dataMap := g.Map{
-		"Data": data,
-	}
-	if err := gconv.Struct(dataMap, rsp); err != nil {
-		return nil, err
-	}
-	return rsp, nil
+func GetBookList() (*protobuf.GetBookListRsp, error) {
+	rsp := new(protobuf.GetBookListRsp)
+	db := g.DB("default")
+	err := db.Table("book_info").Scan(&rsp.Books)
+	return rsp, err
 }
 
-func BorrowBook(req borrow_server.BorrowBookReq) (*borrow_server.BorrowBookRsp, error) {
-	rsp := new(borrow_server.BorrowBookRsp)
+func BorrowBook(r *protobuf.BorrowBookReq) (*protobuf.BorrowBookRsp, error) {
+	rsp := new(protobuf.BorrowBookRsp)
 	borrowInfo := g.Map{
-		"book_id":   req.BookId,
-		"user_id":   req.UserId,
+		"book_id":   r.BookId,
+		"user_id":   r.UserId,
 		"lend_date": time.Now(),
 	}
 	err := dao.SaveBorrowList("default", borrowInfo)
-	if err != nil {
-		return nil, err
-	}
-	return rsp, nil
+	rsp.Msg = "success"
+	return rsp, err
+}
+
+func ReturnBook(r *protobuf.ReturnBookReq) (*protobuf.ReturnBookRsp, error) {
+	rsp := new(protobuf.ReturnBookRsp)
+	db := g.DB("default")
+	res, err := db.Table("borrow_list").Data(
+		g.Map{"back_date": gtime.Datetime()}).Where(
+		"book_id=? AND user_id=?", r.BookId, r.UserId).Update()
+	fmt.Println(res)
+	rsp.Msg = "success"
+	return rsp, err
 }

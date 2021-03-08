@@ -1,10 +1,12 @@
-# HTTP Server.
-[server]
-	Address        = ":58080"
-	ServerAgent    = "borrow-server"
-	LogPath        = "/tmp/log/server"
-	NameToUriType  = 2
-	RouteOverWrite = true
+# 注册发现
+[discovery]
+    endpoints = ["127.0.0.1:2379"]
+
+# GRPC Server
+[grpcserver]
+    appId            = "borrow"
+	address          = ":58080"
+    accessLogEnabled = true
 
 # Logger configurations.
 [logger]

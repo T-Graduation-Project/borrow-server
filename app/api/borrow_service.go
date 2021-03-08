@@ -1,33 +1,32 @@
 package api
 
 import (
+	"context"
 	"github.com/T-Graduation-Project/borrow-server/app/service"
-	"github.com/T-Graduation-Project/borrow-server/lib/response"
-	proto "github.com/T-Graduation-Project/protobuf/borrow_server"
-	"github.com/gogf/gf/net/ghttp"
+	"github.com/T-Graduation-Project/borrow-server/protobuf"
 )
 
 type borrowService struct{}
 
-var Borrow = new(borrowService)
+var Borrow = &borrowService{}
 
 // 获取图书列表
-func (s *borrowService) GetBookList(r *ghttp.Request) {
+func (s *borrowService) GetBookList(
+	ctx context.Context, r *protobuf.GetBookListReq) (*protobuf.GetBookListRsp, error) {
 	rsp, err := service.GetBookList()
-	if err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	response.JsonExit(r, 0, rsp)
+	return rsp, err
 }
 
-func (s *borrowService) BorrowBook(r *ghttp.Request) {
-	var req proto.BorrowBookReq
-	if err := r.Parse(&req); err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	rsp, err := service.BorrowBook(req)
-	if err != nil {
-		response.JsonExit(r, 1, err.Error())
-	}
-	response.JsonExit(r, 0, rsp)
+// 借书
+func (s *borrowService) BorrowBook(
+	ctx context.Context, r *protobuf.BorrowBookReq) (*protobuf.BorrowBookRsp, error) {
+	rsp, err := service.BorrowBook(r)
+	return rsp, err
+}
+
+// 还书
+func (s *borrowService) ReturnBook(
+	ctx context.Context, r *protobuf.ReturnBookReq) (*protobuf.ReturnBookRsp, error) {
+	rsp, err := service.ReturnBook(r)
+	return rsp, err
 }

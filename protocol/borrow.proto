@@ -1,10 +1,9 @@
 syntax = "proto3";
-option go_package = ".;borrow_server";
-package borrow_server;
+package borrow;
+option go_package = "protobuf";
 
 service Borrow {
   rpc GetBookList(GetBookListReq) returns (GetBookListRsp) {}
-  rpc GetBookDetail(GetBookDetailReq) returns (GetBookDetailRsp) {}
   rpc BorrowBook(BorrowBookReq) returns (BorrowBookRsp) {}
   rpc ReturnBook(ReturnBookReq) returns (ReturnBookRsp) {}
 }
@@ -25,14 +24,6 @@ message GetBookListRsp {
   repeated Book books = 1;
 }
 
-message GetBookDetailReq {
-  int64 id = 1;
-}
-
-message GetBookDetailRsp {
-  Book book = 1; 
-}
-
 message BorrowBookReq {
   int64 user_id = 1;
   int64 book_id = 2;
@@ -48,5 +39,5 @@ message ReturnBookReq {
 }
 
 message ReturnBookRsp {
-
+  string msg = 1;
 }
