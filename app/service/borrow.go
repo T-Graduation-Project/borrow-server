@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"github.com/T-Graduation-Project/borrow-server/protobuf"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
@@ -22,7 +21,7 @@ func BorrowBook(r *protobuf.BorrowBookReq) (*protobuf.BorrowBookRsp, error) {
 	if err != nil || hasRepeat == true {
 		return rsp, err
 	}
-
+	// 写入借阅记录；更新 book number
 	borrowInfo := g.Map{
 		"book_id":   r.BookId,
 		"user_id":   r.UserId,
@@ -34,10 +33,13 @@ func BorrowBook(r *protobuf.BorrowBookReq) (*protobuf.BorrowBookRsp, error) {
 		g.Log().Println("SaveBorrowList failed")
 	}
 	book, err := db.Table("book_info").Where("id=?", r.BookId).One()
-	fmt.Println(&num.va)
-
-	//res, err = db.Table("book_info").Where(
-	//	"book_id=?", r.BookId).Update(book["number"] + 1,)
+	bookMap := book.Map()
+	num := bookMap["number"].(int)
+	if num == 0 {
+		rsp.Msg = "The number of this book is 0"
+		return rsp, err
+	}
+	_, err = db.Table("book_info").Update(g.Map{"number": num - 1}, "id", r.BookId)
 	rsp.Msg = "borrow success"
 	return rsp, err
 }
@@ -49,6 +51,16 @@ func ReturnBook(r *protobuf.ReturnBookReq) (*protobuf.ReturnBookRsp, error) {
 		g.Map{"back_date": gtime.Datetime()}).Where(
 		"book_id=? AND user_id=?", r.BookId, r.UserId).Update()
 	g.Log().Println(res)
+
+	// TODO
+	book, err := db.Table("book_info").Where("id=?", r.BookId).One()
+	bookMap := book.Map()
+	num := bookMap["number"].(int)
+	if num == 0 {
+		rsp.Msg = "The number of this book is 0"
+		return rsp, err
+	}
+	// TODO
 	rsp.Msg = "success"
 	return rsp, err
 }
