@@ -21,7 +21,7 @@ func BorrowBook(r *protobuf.BorrowBookReq) (*protobuf.BorrowBookRsp, error) {
 	if err != nil || hasRepeat == true {
 		return rsp, err
 	}
-	// 写入借阅记录；更新 book number
+	// 写入借阅记录
 	borrowInfo := g.Map{
 		"book_id":   r.BookId,
 		"user_id":   r.UserId,
@@ -32,14 +32,15 @@ func BorrowBook(r *protobuf.BorrowBookReq) (*protobuf.BorrowBookRsp, error) {
 	if err != nil {
 		g.Log().Println("SaveBorrowList failed")
 	}
+	// 修改 book_info 中的书本库存数量
 	book, err := db.Table("book_info").Where("id=?", r.BookId).One()
-	bookMap := book.Map()
-	num := bookMap["number"].(int)
+	num := book.Map()["number"].(int)
 	if num == 0 {
 		rsp.Msg = "The number of this book is 0"
 		return rsp, err
 	}
-	_, err = db.Table("book_info").Update(g.Map{"number": num - 1}, "id", r.BookId)
+	_, err = db.Table("book_info").Update(
+		g.Map{"number": num - 1}, "id", r.BookId)
 	rsp.Msg = "borrow success"
 	return rsp, err
 }
@@ -52,15 +53,11 @@ func ReturnBook(r *protobuf.ReturnBookReq) (*protobuf.ReturnBookRsp, error) {
 		"book_id=? AND user_id=?", r.BookId, r.UserId).Update()
 	g.Log().Println(res)
 
-	// TODO
+	// 修改 book_info 中的书本库存数量
 	book, err := db.Table("book_info").Where("id=?", r.BookId).One()
-	bookMap := book.Map()
-	num := bookMap["number"].(int)
-	if num == 0 {
-		rsp.Msg = "The number of this book is 0"
-		return rsp, err
-	}
-	// TODO
+	_, err = db.Table("book_info").Update(
+		g.Map{"number": book.Map()["number"].(int) + 1}, "id", r.BookId)
+
 	rsp.Msg = "success"
 	return rsp, err
 }
