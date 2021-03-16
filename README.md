@@ -20,12 +20,10 @@ gf gen dao
 gf gen dao -l "mysql:username:password@tcp(ip:port)/tablename"
 
 # docker
-docker rmi csighub.tencentyun.com/urftian/tendoc-oms-server-go
-docker build -t csighub.tencentyun.com/urftian/tendoc-oms-server-go .
-docker run --rm -it -p 58080:58080 csighub.tencentyun.com/urftian/tendoc-oms-server-go
-
+docker build -t image_name .
+docker run --rm -it -p 58080:58080 image_name
 docker login 
-docker push csighub.tencentyun.com/urftian/tendoc-oms-server-go
+docker push image_name
 ~~~
 
 protoc 命令来自于 https://github.com/google/protobuf，可以产生序列化和反序列化的代码，无go相关代码。
