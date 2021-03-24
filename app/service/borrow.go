@@ -1,18 +1,12 @@
 package service
 
 import (
+	bookPb "github.com/T-Graduation-Project/book-server/protobuf"
 	"github.com/T-Graduation-Project/borrow-server/protobuf"
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
 	"time"
 )
-
-func GetBookList() (*protobuf.GetBookListRsp, error) {
-	rsp := new(protobuf.GetBookListRsp)
-	db := g.DB("default")
-	err := db.Table("book_info").Scan(&rsp.Books)
-	return rsp, err
-}
 
 func BorrowBook(r *protobuf.BorrowBookReq) (*protobuf.BorrowBookRsp, error) {
 	rsp := new(protobuf.BorrowBookRsp)
@@ -32,6 +26,7 @@ func BorrowBook(r *protobuf.BorrowBookReq) (*protobuf.BorrowBookRsp, error) {
 	if err != nil {
 		g.Log().Println("SaveBorrowList failed")
 	}
+
 	// 修改 book_info 中的书本库存数量
 	book, err := db.Table("book_info").Where("id=?", r.BookId).One()
 	num := book.Map()["number"].(int)
@@ -71,4 +66,8 @@ func hasRepeatBorrowRecord(userId int64, bookId int64) (bool, error) {
 		return true, err
 	}
 	return false, err
+}
+
+func updateBookNumber() {
+	bookPb.
 }

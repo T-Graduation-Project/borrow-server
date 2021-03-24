@@ -10,13 +10,6 @@ type borrowService struct{}
 
 var Borrow = &borrowService{}
 
-// 获取图书列表
-func (s *borrowService) GetBookList(
-	ctx context.Context, r *protobuf.GetBookListReq) (*protobuf.GetBookListRsp, error) {
-	rsp, err := service.GetBookList()
-	return rsp, err
-}
-
 // 借书
 func (s *borrowService) BorrowBook(
 	ctx context.Context, r *protobuf.BorrowBookReq) (*protobuf.BorrowBookRsp, error) {
