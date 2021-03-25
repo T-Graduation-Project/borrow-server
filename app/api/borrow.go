@@ -23,3 +23,10 @@ func (s *borrowService) ReturnBook(
 	rsp, err := service.ReturnBook(r)
 	return rsp, err
 }
+
+// 还书
+func (s *borrowService) DeleteRecord(
+	ctx context.Context, r *protobuf.DeleteRecordReq) (*protobuf.DeleteRecordRsp, error) {
+	rsp, err := service.DeleteRecord(r)
+	return rsp, err
+}

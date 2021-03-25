@@ -1,43 +1,47 @@
 syntax = "proto3";
 package borrow;
-option go_package = "protobuf";
 
 service Borrow {
-  rpc GetBookList(GetBookListReq) returns (GetBookListRsp) {}
-  rpc BorrowBook(BorrowBookReq) returns (BorrowBookRsp) {}
-  rpc ReturnBook(ReturnBookReq) returns (ReturnBookRsp) {}
+    rpc BorrowBook(BorrowBookReq) returns (BorrowBookRsp) {}
+    rpc ReturnBook(ReturnBookReq) returns (ReturnBookRsp) {}
+    rpc DeleteRecord(DeleteRecordReq) returns (DeleteRecordRsp) {}
 }
 
 message Book {
-  int64 id = 1;
-  string name = 2;
-  string author = 3;
-  string publish = 4;
-  string introduction = 5;
-  int64 number = 6;
-  string ISBN = 7;
-}
-
-message GetBookListReq {}
-
-message GetBookListRsp {
-  repeated Book books = 1;
+    int64 id = 1;
+    string name = 2;
+    string author = 3;
+    string publish = 4;
+    string introduction = 5;
+    int64 number = 6;
+    string ISBN = 7;
 }
 
 message BorrowBookReq {
-  int64 user_id = 1;
-  int64 book_id = 2;
+    int64 user_id = 1;
+    int64 book_id = 2;
 }
 
 message BorrowBookRsp {
-  string msg = 1;
+    int64 code = 1;
+    string msg = 2;
 }
 
 message ReturnBookReq {
-  int64 user_id = 1;
-  int64 book_id = 2;
+    int64 user_id = 1;
+    int64 book_id = 2;
+    string borrow_date = 3;
 }
 
 message ReturnBookRsp {
-  string msg = 1;
+    int64 code = 1;
+    string msg = 2;
+}
+
+message DeleteRecordReq {
+    int64 id = 1;
+}
+message DeleteRecordRsp{
+    int64 code = 1;
+    string msg = 2;
 }
