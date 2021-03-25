@@ -121,92 +121,6 @@ func (m *Book) GetISBN() string {
 	return ""
 }
 
-type GetBookListReq struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *GetBookListReq) Reset()         { *m = GetBookListReq{} }
-func (m *GetBookListReq) String() string { return proto.CompactTextString(m) }
-func (*GetBookListReq) ProtoMessage()    {}
-func (*GetBookListReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a706cddf1f5749cb, []int{1}
-}
-func (m *GetBookListReq) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *GetBookListReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_GetBookListReq.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *GetBookListReq) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetBookListReq.Merge(m, src)
-}
-func (m *GetBookListReq) XXX_Size() int {
-	return m.Size()
-}
-func (m *GetBookListReq) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetBookListReq.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetBookListReq proto.InternalMessageInfo
-
-type GetBookListRsp struct {
-	Books                []*Book  `protobuf:"bytes,1,rep,name=books,proto3" json:"books,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *GetBookListRsp) Reset()         { *m = GetBookListRsp{} }
-func (m *GetBookListRsp) String() string { return proto.CompactTextString(m) }
-func (*GetBookListRsp) ProtoMessage()    {}
-func (*GetBookListRsp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a706cddf1f5749cb, []int{2}
-}
-func (m *GetBookListRsp) XXX_Unmarshal(b []byte) error {
-	return m.Unmarshal(b)
-}
-func (m *GetBookListRsp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	if deterministic {
-		return xxx_messageInfo_GetBookListRsp.Marshal(b, m, deterministic)
-	} else {
-		b = b[:cap(b)]
-		n, err := m.MarshalToSizedBuffer(b)
-		if err != nil {
-			return nil, err
-		}
-		return b[:n], nil
-	}
-}
-func (m *GetBookListRsp) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetBookListRsp.Merge(m, src)
-}
-func (m *GetBookListRsp) XXX_Size() int {
-	return m.Size()
-}
-func (m *GetBookListRsp) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetBookListRsp.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetBookListRsp proto.InternalMessageInfo
-
-func (m *GetBookListRsp) GetBooks() []*Book {
-	if m != nil {
-		return m.Books
-	}
-	return nil
-}
-
 type BorrowBookReq struct {
 	UserId               int64    `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	BookId               int64    `protobuf:"varint,2,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`
@@ -219,7 +133,7 @@ func (m *BorrowBookReq) Reset()         { *m = BorrowBookReq{} }
 func (m *BorrowBookReq) String() string { return proto.CompactTextString(m) }
 func (*BorrowBookReq) ProtoMessage()    {}
 func (*BorrowBookReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a706cddf1f5749cb, []int{3}
+	return fileDescriptor_a706cddf1f5749cb, []int{1}
 }
 func (m *BorrowBookReq) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -263,7 +177,8 @@ func (m *BorrowBookReq) GetBookId() int64 {
 }
 
 type BorrowBookRsp struct {
-	Msg                  string   `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	Code                 int64    `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg                  string   `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -273,7 +188,7 @@ func (m *BorrowBookRsp) Reset()         { *m = BorrowBookRsp{} }
 func (m *BorrowBookRsp) String() string { return proto.CompactTextString(m) }
 func (*BorrowBookRsp) ProtoMessage()    {}
 func (*BorrowBookRsp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a706cddf1f5749cb, []int{4}
+	return fileDescriptor_a706cddf1f5749cb, []int{2}
 }
 func (m *BorrowBookRsp) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -302,6 +217,13 @@ func (m *BorrowBookRsp) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BorrowBookRsp proto.InternalMessageInfo
 
+func (m *BorrowBookRsp) GetCode() int64 {
+	if m != nil {
+		return m.Code
+	}
+	return 0
+}
+
 func (m *BorrowBookRsp) GetMsg() string {
 	if m != nil {
 		return m.Msg
@@ -312,6 +234,7 @@ func (m *BorrowBookRsp) GetMsg() string {
 type ReturnBookReq struct {
 	UserId               int64    `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	BookId               int64    `protobuf:"varint,2,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`
+	BorrowDate           string   `protobuf:"bytes,3,opt,name=borrow_date,json=borrowDate,proto3" json:"borrow_date,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -321,7 +244,7 @@ func (m *ReturnBookReq) Reset()         { *m = ReturnBookReq{} }
 func (m *ReturnBookReq) String() string { return proto.CompactTextString(m) }
 func (*ReturnBookReq) ProtoMessage()    {}
 func (*ReturnBookReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a706cddf1f5749cb, []int{5}
+	return fileDescriptor_a706cddf1f5749cb, []int{3}
 }
 func (m *ReturnBookReq) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -364,8 +287,16 @@ func (m *ReturnBookReq) GetBookId() int64 {
 	return 0
 }
 
+func (m *ReturnBookReq) GetBorrowDate() string {
+	if m != nil {
+		return m.BorrowDate
+	}
+	return ""
+}
+
 type ReturnBookRsp struct {
-	Msg                  string   `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	Code                 int64    `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg                  string   `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -375,7 +306,7 @@ func (m *ReturnBookRsp) Reset()         { *m = ReturnBookRsp{} }
 func (m *ReturnBookRsp) String() string { return proto.CompactTextString(m) }
 func (*ReturnBookRsp) ProtoMessage()    {}
 func (*ReturnBookRsp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a706cddf1f5749cb, []int{6}
+	return fileDescriptor_a706cddf1f5749cb, []int{4}
 }
 func (m *ReturnBookRsp) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -404,7 +335,116 @@ func (m *ReturnBookRsp) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ReturnBookRsp proto.InternalMessageInfo
 
+func (m *ReturnBookRsp) GetCode() int64 {
+	if m != nil {
+		return m.Code
+	}
+	return 0
+}
+
 func (m *ReturnBookRsp) GetMsg() string {
+	if m != nil {
+		return m.Msg
+	}
+	return ""
+}
+
+type DeleteRecordReq struct {
+	Id                   int64    `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteRecordReq) Reset()         { *m = DeleteRecordReq{} }
+func (m *DeleteRecordReq) String() string { return proto.CompactTextString(m) }
+func (*DeleteRecordReq) ProtoMessage()    {}
+func (*DeleteRecordReq) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a706cddf1f5749cb, []int{5}
+}
+func (m *DeleteRecordReq) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteRecordReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteRecordReq.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteRecordReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteRecordReq.Merge(m, src)
+}
+func (m *DeleteRecordReq) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteRecordReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteRecordReq.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteRecordReq proto.InternalMessageInfo
+
+func (m *DeleteRecordReq) GetId() int64 {
+	if m != nil {
+		return m.Id
+	}
+	return 0
+}
+
+type DeleteRecordRsp struct {
+	Code                 int64    `protobuf:"varint,1,opt,name=code,proto3" json:"code,omitempty"`
+	Msg                  string   `protobuf:"bytes,2,opt,name=msg,proto3" json:"msg,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DeleteRecordRsp) Reset()         { *m = DeleteRecordRsp{} }
+func (m *DeleteRecordRsp) String() string { return proto.CompactTextString(m) }
+func (*DeleteRecordRsp) ProtoMessage()    {}
+func (*DeleteRecordRsp) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a706cddf1f5749cb, []int{6}
+}
+func (m *DeleteRecordRsp) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *DeleteRecordRsp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_DeleteRecordRsp.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *DeleteRecordRsp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DeleteRecordRsp.Merge(m, src)
+}
+func (m *DeleteRecordRsp) XXX_Size() int {
+	return m.Size()
+}
+func (m *DeleteRecordRsp) XXX_DiscardUnknown() {
+	xxx_messageInfo_DeleteRecordRsp.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DeleteRecordRsp proto.InternalMessageInfo
+
+func (m *DeleteRecordRsp) GetCode() int64 {
+	if m != nil {
+		return m.Code
+	}
+	return 0
+}
+
+func (m *DeleteRecordRsp) GetMsg() string {
 	if m != nil {
 		return m.Msg
 	}
@@ -413,41 +453,42 @@ func (m *ReturnBookRsp) GetMsg() string {
 
 func init() {
 	proto.RegisterType((*Book)(nil), "borrow.Book")
-	proto.RegisterType((*GetBookListReq)(nil), "borrow.GetBookListReq")
-	proto.RegisterType((*GetBookListRsp)(nil), "borrow.GetBookListRsp")
 	proto.RegisterType((*BorrowBookReq)(nil), "borrow.BorrowBookReq")
 	proto.RegisterType((*BorrowBookRsp)(nil), "borrow.BorrowBookRsp")
 	proto.RegisterType((*ReturnBookReq)(nil), "borrow.ReturnBookReq")
 	proto.RegisterType((*ReturnBookRsp)(nil), "borrow.ReturnBookRsp")
+	proto.RegisterType((*DeleteRecordReq)(nil), "borrow.DeleteRecordReq")
+	proto.RegisterType((*DeleteRecordRsp)(nil), "borrow.DeleteRecordRsp")
 }
 
 func init() { proto.RegisterFile("protocol/borrow.proto", fileDescriptor_a706cddf1f5749cb) }
 
 var fileDescriptor_a706cddf1f5749cb = []byte{
-	// 367 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x52, 0xc1, 0x6a, 0xea, 0x40,
-	0x14, 0x75, 0x12, 0x8d, 0xcf, 0xab, 0x4f, 0xe4, 0x82, 0xbe, 0x21, 0x8b, 0xe0, 0x9b, 0x95, 0x2b,
-	0x1f, 0xf8, 0xba, 0x2c, 0x94, 0x66, 0x53, 0x84, 0xd2, 0x45, 0xba, 0xeb, 0xa6, 0x18, 0x93, 0xd6,
-	0xa0, 0x66, 0xe2, 0x4c, 0x86, 0xfe, 0x4a, 0x3f, 0xa2, 0xbf, 0x51, 0xe8, 0xb2, 0x9f, 0x50, 0xec,
-	0x8f, 0x94, 0x99, 0x68, 0x63, 0x20, 0xbb, 0xee, 0xee, 0x39, 0x27, 0x67, 0xee, 0xb9, 0x87, 0xc0,
-	0x30, 0x13, 0x3c, 0xe7, 0x4b, 0xbe, 0xf9, 0x17, 0x72, 0x21, 0xf8, 0xd3, 0xd4, 0x60, 0x74, 0x0a,
-	0xc4, 0x5e, 0x08, 0x34, 0x7d, 0xce, 0xd7, 0xd8, 0x07, 0x2b, 0x89, 0x28, 0x19, 0x93, 0x89, 0x1d,
-	0x58, 0x49, 0x84, 0x08, 0xcd, 0x74, 0xb1, 0x8d, 0xa9, 0x35, 0x26, 0x93, 0x4e, 0x60, 0x66, 0x1c,
-	0x81, 0xb3, 0x50, 0xf9, 0x8a, 0x0b, 0x6a, 0x1b, 0xf6, 0x80, 0x90, 0x42, 0x3b, 0x53, 0xe1, 0x26,
-	0x91, 0x2b, 0xda, 0x34, 0xc2, 0x11, 0x22, 0x83, 0x5e, 0x92, 0xe6, 0x82, 0x47, 0x6a, 0x99, 0x27,
-	0x3c, 0xa5, 0x2d, 0x23, 0x57, 0x38, 0xfd, 0x6a, 0xaa, 0xb6, 0x61, 0x2c, 0xa8, 0x63, 0xb6, 0x1f,
-	0x90, 0x4e, 0x30, 0xbf, 0xf5, 0x6f, 0x68, 0xbb, 0x48, 0xa0, 0x67, 0x36, 0x80, 0xfe, 0x55, 0x9c,
-	0xeb, 0xc0, 0xd7, 0x89, 0xcc, 0x83, 0x78, 0xc7, 0xce, 0xaa, 0x8c, 0xcc, 0x90, 0x41, 0x2b, 0xe4,
-	0x7c, 0x2d, 0x29, 0x19, 0xdb, 0x93, 0xee, 0xac, 0x37, 0x3d, 0x1c, 0xae, 0xbf, 0x09, 0x0a, 0x89,
-	0x5d, 0xc2, 0x6f, 0xdf, 0xb0, 0x86, 0x8c, 0x77, 0xf8, 0x07, 0xda, 0x4a, 0xc6, 0xe2, 0xfe, 0xbb,
-	0x03, 0x47, 0xc3, 0x79, 0xa4, 0x05, 0x6d, 0xd1, 0x82, 0x55, 0x08, 0x1a, 0xce, 0x23, 0xf6, 0xb7,
-	0xf2, 0x84, 0xcc, 0x70, 0x00, 0xf6, 0x56, 0x3e, 0x1a, 0x7b, 0x27, 0xd0, 0xa3, 0xde, 0x12, 0xc4,
-	0xb9, 0x12, 0xe9, 0x8f, 0xb6, 0x9c, 0x3c, 0x51, 0xb7, 0x65, 0xf6, 0x4a, 0xc0, 0x29, 0x92, 0xe0,
-	0x05, 0x74, 0x4f, 0xca, 0xc0, 0xd1, 0xf1, 0xf4, 0x6a, 0x67, 0x6e, 0x2d, 0x2f, 0x33, 0xd6, 0xc0,
-	0x73, 0x80, 0xf2, 0x28, 0x1c, 0x96, 0xd5, 0x9d, 0x74, 0xe5, 0xd6, 0xd1, 0x47, 0x77, 0x19, 0xb6,
-	0x74, 0x57, 0x3a, 0x70, 0xeb, 0x68, 0xed, 0xf6, 0xdd, 0xb7, 0xbd, 0x47, 0xde, 0xf7, 0x1e, 0xf9,
-	0xd8, 0x7b, 0xe4, 0xf9, 0xd3, 0x6b, 0xdc, 0xfd, 0x32, 0xff, 0x6a, 0xa8, 0x1e, 0x42, 0xc7, 0x4c,
-	0xff, 0xbf, 0x02, 0x00, 0x00, 0xff, 0xff, 0xd1, 0xd4, 0x0e, 0xc8, 0xce, 0x02, 0x00, 0x00,
+	// 373 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x53, 0x41, 0x4e, 0xc2, 0x40,
+	0x14, 0x65, 0x0a, 0x96, 0xf8, 0x05, 0x25, 0x93, 0x20, 0x13, 0x16, 0x15, 0xbb, 0x62, 0x85, 0x89,
+	0xc6, 0xb8, 0x71, 0x63, 0xc3, 0x86, 0x8d, 0x8b, 0x7a, 0x00, 0xd2, 0x76, 0x26, 0xd2, 0x00, 0x9d,
+	0x3a, 0x9d, 0xc6, 0xab, 0x78, 0x08, 0x0f, 0xc2, 0xd2, 0x23, 0x18, 0xbc, 0x88, 0xf9, 0xd3, 0x22,
+	0x94, 0xb0, 0x20, 0xee, 0xfe, 0x7b, 0x6f, 0xfe, 0xff, 0x6f, 0xde, 0xb4, 0xd0, 0x4d, 0x95, 0xd4,
+	0x32, 0x92, 0x8b, 0x9b, 0x50, 0x2a, 0x25, 0xdf, 0x47, 0x06, 0x53, 0xbb, 0x40, 0xee, 0x27, 0x81,
+	0x86, 0x27, 0xe5, 0x9c, 0x9e, 0x83, 0x15, 0x73, 0x46, 0x06, 0x64, 0x58, 0xf7, 0xad, 0x98, 0x53,
+	0x0a, 0x8d, 0x24, 0x58, 0x0a, 0x66, 0x0d, 0xc8, 0xf0, 0xd4, 0x37, 0x35, 0xbd, 0x04, 0x3b, 0xc8,
+	0xf5, 0x4c, 0x2a, 0x56, 0x37, 0x6c, 0x89, 0x28, 0x83, 0x66, 0x9a, 0x87, 0x8b, 0x38, 0x9b, 0xb1,
+	0x86, 0x11, 0x36, 0x90, 0xba, 0xd0, 0x8a, 0x13, 0xad, 0x24, 0xcf, 0x23, 0x1d, 0xcb, 0x84, 0x9d,
+	0x18, 0xb9, 0xc2, 0xe1, 0xd4, 0x24, 0x5f, 0x86, 0x42, 0x31, 0xdb, 0x6c, 0x2f, 0x11, 0x3a, 0x98,
+	0xbc, 0x78, 0xcf, 0xac, 0x59, 0x38, 0xc0, 0xda, 0x7d, 0x82, 0xb6, 0x67, 0x8c, 0xa3, 0x67, 0x5f,
+	0xbc, 0xd1, 0x1e, 0x34, 0xf3, 0x4c, 0xa8, 0xe9, 0x9f, 0x77, 0x1b, 0xe1, 0x84, 0xa3, 0x10, 0x4a,
+	0x39, 0x47, 0xc1, 0x2a, 0x04, 0x84, 0x13, 0xee, 0xde, 0x57, 0x46, 0x64, 0x29, 0xee, 0x89, 0x24,
+	0x17, 0x65, 0xbf, 0xa9, 0x69, 0x07, 0xea, 0xcb, 0xec, 0xb5, 0xbc, 0x3c, 0x96, 0x6e, 0x08, 0x6d,
+	0x5f, 0xe8, 0x5c, 0x25, 0xff, 0xde, 0x4c, 0xaf, 0xe0, 0xac, 0x48, 0x7d, 0xca, 0x03, 0x2d, 0xca,
+	0x0c, 0xa1, 0xa0, 0xc6, 0x81, 0x16, 0x68, 0x6d, 0x67, 0xc7, 0xd1, 0xd6, 0xae, 0xe1, 0x62, 0x2c,
+	0x16, 0x42, 0x0b, 0x5f, 0x44, 0x52, 0x71, 0x34, 0xb7, 0xf7, 0x9a, 0xee, 0xc3, 0xde, 0x91, 0x63,
+	0x67, 0xdf, 0xae, 0x08, 0xd8, 0x45, 0x5c, 0xf4, 0x11, 0x60, 0x1b, 0x1c, 0xed, 0x8e, 0xca, 0xef,
+	0xa9, 0xf2, 0x1e, 0xfd, 0x43, 0x74, 0x96, 0xba, 0x35, 0xec, 0xde, 0xde, 0x6d, 0xdb, 0x5d, 0xc9,
+	0xb4, 0x7f, 0x88, 0x36, 0xdd, 0x1e, 0xb4, 0x76, 0xfd, 0xd3, 0xde, 0xe6, 0xe0, 0xde, 0xc5, 0xfb,
+	0x87, 0x05, 0x9c, 0xe1, 0x75, 0x56, 0x6b, 0x87, 0x7c, 0xad, 0x1d, 0xf2, 0xbd, 0x76, 0xc8, 0xc7,
+	0x8f, 0x53, 0x0b, 0x6d, 0xf3, 0x2f, 0xdc, 0xfd, 0x06, 0x00, 0x00, 0xff, 0xff, 0xb8, 0xdf, 0xf9,
+	0x41, 0x24, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -462,9 +503,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type BorrowClient interface {
-	GetBookList(ctx context.Context, in *GetBookListReq, opts ...grpc.CallOption) (*GetBookListRsp, error)
 	BorrowBook(ctx context.Context, in *BorrowBookReq, opts ...grpc.CallOption) (*BorrowBookRsp, error)
 	ReturnBook(ctx context.Context, in *ReturnBookReq, opts ...grpc.CallOption) (*ReturnBookRsp, error)
+	DeleteRecord(ctx context.Context, in *DeleteRecordReq, opts ...grpc.CallOption) (*DeleteRecordRsp, error)
 }
 
 type borrowClient struct {
@@ -473,15 +514,6 @@ type borrowClient struct {
 
 func NewBorrowClient(cc *grpc.ClientConn) BorrowClient {
 	return &borrowClient{cc}
-}
-
-func (c *borrowClient) GetBookList(ctx context.Context, in *GetBookListReq, opts ...grpc.CallOption) (*GetBookListRsp, error) {
-	out := new(GetBookListRsp)
-	err := c.cc.Invoke(ctx, "/borrow.Borrow/GetBookList", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *borrowClient) BorrowBook(ctx context.Context, in *BorrowBookReq, opts ...grpc.CallOption) (*BorrowBookRsp, error) {
@@ -502,47 +534,38 @@ func (c *borrowClient) ReturnBook(ctx context.Context, in *ReturnBookReq, opts .
 	return out, nil
 }
 
+func (c *borrowClient) DeleteRecord(ctx context.Context, in *DeleteRecordReq, opts ...grpc.CallOption) (*DeleteRecordRsp, error) {
+	out := new(DeleteRecordRsp)
+	err := c.cc.Invoke(ctx, "/borrow.Borrow/DeleteRecord", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BorrowServer is the server API for Borrow service.
 type BorrowServer interface {
-	GetBookList(context.Context, *GetBookListReq) (*GetBookListRsp, error)
 	BorrowBook(context.Context, *BorrowBookReq) (*BorrowBookRsp, error)
 	ReturnBook(context.Context, *ReturnBookReq) (*ReturnBookRsp, error)
+	DeleteRecord(context.Context, *DeleteRecordReq) (*DeleteRecordRsp, error)
 }
 
 // UnimplementedBorrowServer can be embedded to have forward compatible implementations.
 type UnimplementedBorrowServer struct {
 }
 
-func (*UnimplementedBorrowServer) GetBookList(ctx context.Context, req *GetBookListReq) (*GetBookListRsp, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBookList not implemented")
-}
 func (*UnimplementedBorrowServer) BorrowBook(ctx context.Context, req *BorrowBookReq) (*BorrowBookRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BorrowBook not implemented")
 }
 func (*UnimplementedBorrowServer) ReturnBook(ctx context.Context, req *ReturnBookReq) (*ReturnBookRsp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReturnBook not implemented")
 }
+func (*UnimplementedBorrowServer) DeleteRecord(ctx context.Context, req *DeleteRecordReq) (*DeleteRecordRsp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteRecord not implemented")
+}
 
 func RegisterBorrowServer(s *grpc.Server, srv BorrowServer) {
 	s.RegisterService(&_Borrow_serviceDesc, srv)
-}
-
-func _Borrow_GetBookList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBookListReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(BorrowServer).GetBookList(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/borrow.Borrow/GetBookList",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BorrowServer).GetBookList(ctx, req.(*GetBookListReq))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Borrow_BorrowBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -581,14 +604,28 @@ func _Borrow_ReturnBook_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Borrow_DeleteRecord_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteRecordReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BorrowServer).DeleteRecord(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/borrow.Borrow/DeleteRecord",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BorrowServer).DeleteRecord(ctx, req.(*DeleteRecordReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Borrow_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "borrow.Borrow",
 	HandlerType: (*BorrowServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "GetBookList",
-			Handler:    _Borrow_GetBookList_Handler,
-		},
 		{
 			MethodName: "BorrowBook",
 			Handler:    _Borrow_BorrowBook_Handler,
@@ -596,6 +633,10 @@ var _Borrow_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReturnBook",
 			Handler:    _Borrow_ReturnBook_Handler,
+		},
+		{
+			MethodName: "DeleteRecord",
+			Handler:    _Borrow_DeleteRecord_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -674,74 +715,6 @@ func (m *Book) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *GetBookListReq) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *GetBookListReq) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *GetBookListReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
-	return len(dAtA) - i, nil
-}
-
-func (m *GetBookListRsp) Marshal() (dAtA []byte, err error) {
-	size := m.Size()
-	dAtA = make([]byte, size)
-	n, err := m.MarshalToSizedBuffer(dAtA[:size])
-	if err != nil {
-		return nil, err
-	}
-	return dAtA[:n], nil
-}
-
-func (m *GetBookListRsp) MarshalTo(dAtA []byte) (int, error) {
-	size := m.Size()
-	return m.MarshalToSizedBuffer(dAtA[:size])
-}
-
-func (m *GetBookListRsp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
-	i := len(dAtA)
-	_ = i
-	var l int
-	_ = l
-	if m.XXX_unrecognized != nil {
-		i -= len(m.XXX_unrecognized)
-		copy(dAtA[i:], m.XXX_unrecognized)
-	}
-	if len(m.Books) > 0 {
-		for iNdEx := len(m.Books) - 1; iNdEx >= 0; iNdEx-- {
-			{
-				size, err := m.Books[iNdEx].MarshalToSizedBuffer(dAtA[:i])
-				if err != nil {
-					return 0, err
-				}
-				i -= size
-				i = encodeVarintBorrow(dAtA, i, uint64(size))
-			}
-			i--
-			dAtA[i] = 0xa
-		}
-	}
-	return len(dAtA) - i, nil
-}
-
 func (m *BorrowBookReq) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -808,7 +781,12 @@ func (m *BorrowBookRsp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.Msg)
 		i = encodeVarintBorrow(dAtA, i, uint64(len(m.Msg)))
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x12
+	}
+	if m.Code != 0 {
+		i = encodeVarintBorrow(dAtA, i, uint64(m.Code))
+		i--
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -836,6 +814,13 @@ func (m *ReturnBookReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	if m.XXX_unrecognized != nil {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.BorrowDate) > 0 {
+		i -= len(m.BorrowDate)
+		copy(dAtA[i:], m.BorrowDate)
+		i = encodeVarintBorrow(dAtA, i, uint64(len(m.BorrowDate)))
+		i--
+		dAtA[i] = 0x1a
 	}
 	if m.BookId != 0 {
 		i = encodeVarintBorrow(dAtA, i, uint64(m.BookId))
@@ -879,7 +864,83 @@ func (m *ReturnBookRsp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		copy(dAtA[i:], m.Msg)
 		i = encodeVarintBorrow(dAtA, i, uint64(len(m.Msg)))
 		i--
-		dAtA[i] = 0xa
+		dAtA[i] = 0x12
+	}
+	if m.Code != 0 {
+		i = encodeVarintBorrow(dAtA, i, uint64(m.Code))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteRecordReq) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteRecordReq) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteRecordReq) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.Id != 0 {
+		i = encodeVarintBorrow(dAtA, i, uint64(m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *DeleteRecordRsp) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *DeleteRecordRsp) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *DeleteRecordRsp) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.Msg) > 0 {
+		i -= len(m.Msg)
+		copy(dAtA[i:], m.Msg)
+		i = encodeVarintBorrow(dAtA, i, uint64(len(m.Msg)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Code != 0 {
+		i = encodeVarintBorrow(dAtA, i, uint64(m.Code))
+		i--
+		dAtA[i] = 0x8
 	}
 	return len(dAtA) - i, nil
 }
@@ -933,36 +994,6 @@ func (m *Book) Size() (n int) {
 	return n
 }
 
-func (m *GetBookListReq) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
-	return n
-}
-
-func (m *GetBookListRsp) Size() (n int) {
-	if m == nil {
-		return 0
-	}
-	var l int
-	_ = l
-	if len(m.Books) > 0 {
-		for _, e := range m.Books {
-			l = e.Size()
-			n += 1 + l + sovBorrow(uint64(l))
-		}
-	}
-	if m.XXX_unrecognized != nil {
-		n += len(m.XXX_unrecognized)
-	}
-	return n
-}
-
 func (m *BorrowBookReq) Size() (n int) {
 	if m == nil {
 		return 0
@@ -987,6 +1018,9 @@ func (m *BorrowBookRsp) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.Code != 0 {
+		n += 1 + sovBorrow(uint64(m.Code))
+	}
 	l = len(m.Msg)
 	if l > 0 {
 		n += 1 + l + sovBorrow(uint64(l))
@@ -1009,6 +1043,10 @@ func (m *ReturnBookReq) Size() (n int) {
 	if m.BookId != 0 {
 		n += 1 + sovBorrow(uint64(m.BookId))
 	}
+	l = len(m.BorrowDate)
+	if l > 0 {
+		n += 1 + l + sovBorrow(uint64(l))
+	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
 	}
@@ -1021,6 +1059,43 @@ func (m *ReturnBookRsp) Size() (n int) {
 	}
 	var l int
 	_ = l
+	if m.Code != 0 {
+		n += 1 + sovBorrow(uint64(m.Code))
+	}
+	l = len(m.Msg)
+	if l > 0 {
+		n += 1 + l + sovBorrow(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *DeleteRecordReq) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Id != 0 {
+		n += 1 + sovBorrow(uint64(m.Id))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *DeleteRecordRsp) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Code != 0 {
+		n += 1 + sovBorrow(uint64(m.Code))
+	}
 	l = len(m.Msg)
 	if l > 0 {
 		n += 1 + l + sovBorrow(uint64(l))
@@ -1286,142 +1361,6 @@ func (m *Book) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *GetBookListReq) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowBorrow
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: GetBookListReq: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GetBookListReq: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		default:
-			iNdEx = preIndex
-			skippy, err := skipBorrow(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthBorrow
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
-func (m *GetBookListRsp) Unmarshal(dAtA []byte) error {
-	l := len(dAtA)
-	iNdEx := 0
-	for iNdEx < l {
-		preIndex := iNdEx
-		var wire uint64
-		for shift := uint(0); ; shift += 7 {
-			if shift >= 64 {
-				return ErrIntOverflowBorrow
-			}
-			if iNdEx >= l {
-				return io.ErrUnexpectedEOF
-			}
-			b := dAtA[iNdEx]
-			iNdEx++
-			wire |= uint64(b&0x7F) << shift
-			if b < 0x80 {
-				break
-			}
-		}
-		fieldNum := int32(wire >> 3)
-		wireType := int(wire & 0x7)
-		if wireType == 4 {
-			return fmt.Errorf("proto: GetBookListRsp: wiretype end group for non-group")
-		}
-		if fieldNum <= 0 {
-			return fmt.Errorf("proto: GetBookListRsp: illegal tag %d (wire type %d)", fieldNum, wire)
-		}
-		switch fieldNum {
-		case 1:
-			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Books", wireType)
-			}
-			var msglen int
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowBorrow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				msglen |= int(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			if msglen < 0 {
-				return ErrInvalidLengthBorrow
-			}
-			postIndex := iNdEx + msglen
-			if postIndex < 0 {
-				return ErrInvalidLengthBorrow
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Books = append(m.Books, &Book{})
-			if err := m.Books[len(m.Books)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
-				return err
-			}
-			iNdEx = postIndex
-		default:
-			iNdEx = preIndex
-			skippy, err := skipBorrow(dAtA[iNdEx:])
-			if err != nil {
-				return err
-			}
-			if (skippy < 0) || (iNdEx+skippy) < 0 {
-				return ErrInvalidLengthBorrow
-			}
-			if (iNdEx + skippy) > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
-			iNdEx += skippy
-		}
-	}
-
-	if iNdEx > l {
-		return io.ErrUnexpectedEOF
-	}
-	return nil
-}
 func (m *BorrowBookReq) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1541,6 +1480,25 @@ func (m *BorrowBookRsp) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Code", wireType)
+			}
+			m.Code = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBorrow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Code |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
 			}
@@ -1661,6 +1619,38 @@ func (m *ReturnBookReq) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BorrowDate", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBorrow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBorrow
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBorrow
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.BorrowDate = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipBorrow(dAtA[iNdEx:])
@@ -1713,6 +1703,197 @@ func (m *ReturnBookRsp) Unmarshal(dAtA []byte) error {
 		}
 		switch fieldNum {
 		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Code", wireType)
+			}
+			m.Code = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBorrow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Code |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBorrow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthBorrow
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthBorrow
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Msg = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBorrow(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBorrow
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteRecordReq) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBorrow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteRecordReq: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteRecordReq: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
+			}
+			m.Id = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBorrow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Id |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipBorrow(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthBorrow
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *DeleteRecordRsp) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowBorrow
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: DeleteRecordRsp: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: DeleteRecordRsp: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Code", wireType)
+			}
+			m.Code = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowBorrow
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Code |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Msg", wireType)
 			}

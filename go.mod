@@ -3,14 +3,14 @@ module github.com/T-Graduation-Project/borrow-server
 go 1.15
 
 require (
-	github.com/gogf/gf v1.15.1
-	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/protobuf v1.4.3
-	github.com/pkg/errors v0.9.1 // indirect
-	github.com/stretchr/testify v1.5.1 // indirect
-	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
+	github.com/T-Graduation-Project/book-server v0.0.0-20210324071718-a7c51745ddcb
+	github.com/T-Graduation-Project/proto v1.0.0 // indirect
+	github.com/gogf/gf v1.15.4
+	github.com/golang/protobuf v1.5.1
+	github.com/kr/pretty v0.1.0 // indirect
 	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b
-	google.golang.org/grpc v1.30.0
-	google.golang.org/protobuf v1.25.0 // indirect
-	honnef.co/go/tools v0.0.1-2020.1.4 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	google.golang.org/grpc v1.36.0
+	google.golang.org/grpc/examples v0.0.0-20210324172016-702608ffae4d // indirect
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )
