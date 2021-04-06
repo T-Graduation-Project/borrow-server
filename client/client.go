@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/T-Graduation-Project/borrow-server/protobuf"
 	"github.com/gogf/gf/frame/g"
+	"github.com/gogf/gf/os/gtime"
 	"github.com/micro/go-micro/v2"
 )
 
@@ -32,7 +33,7 @@ func main() {
 
 	// 还书
 	r2, err := client.ReturnBook(
-		context.Background(), &protobuf.ReturnBookReq{UserId: 1, BookId: 2, BorrowDate: "2021-03-25"})
+		context.Background(), &protobuf.ReturnBookReq{UserId: 1, BookId: 2, BorrowDate: gtime.Date()})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

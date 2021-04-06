@@ -8,7 +8,7 @@ import (
 	"github.com/gogf/gf/os/glog"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
-	"google.golang.org/grpc"
+	"github.com/micro/go-micro/v2"
 )
 
 type BorrowApi struct{}
@@ -77,7 +77,7 @@ func (s *BorrowApi) ReturnBook(
 	// 更新 borrow_list
 	res, err := db.Table("borrow_list").Data(
 		g.Map{"back_date": gtime.Date()}).Where(
-		"book_id=? AND user_id=?", req.BookId, req.UserId).Update()
+		"book_id=? AND user_id=? AND lend_date=?", req.BookId, req.UserId, req.BorrowDate).Update()
 	if err != nil {
 		log.Info("update borrow_list error:", err)
 		return err
@@ -145,13 +145,11 @@ func canBeBack(userId int64, bookId int64, lendDate string) (bool, error) {
 }
 
 func updateBookNumber(isbnCode string, bookNum int) {
-	// book-server 的地址写死，之后优化
-	conn, err := grpc.Dial("121.5.238.116:8001", grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
-	}
-	defer conn.Close()
-	bookClient := bookPb.NewBooksClient(conn)
+	service := micro.NewService(
+		micro.Name("book.borrow.client"),
+	)
+	service.Init()
+	bookClient := bookPb.NewBooksService("book", service.Client())
 	updateBooksReq := &bookPb.UpdateBooksReq{
 		Books: []*bookPb.Book{
 			{
@@ -160,5 +158,9 @@ func updateBookNumber(isbnCode string, bookNum int) {
 			},
 		},
 	}
-	bookClient.UpdateBooks(context.Background(), updateBooksReq)
+	rsp, err := bookClient.UpdateBooks(context.Background(), updateBooksReq)
+	if err != nil {
+		log.Fatal("remote update book number error", err)
+	}
+	log.Info("remote update book number successful:", rsp)
 }
