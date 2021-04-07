@@ -4,6 +4,7 @@ package borrow;
 service Borrow {
     rpc BorrowBook(BorrowBookReq) returns (BorrowBookRsp) {}
     rpc ReturnBook(ReturnBookReq) returns (ReturnBookRsp) {}
+    rpc GetBorrowHistory(GetBorrowHistoryReq) returns (GetBorrowHistoryRsp) {}
     rpc DeleteRecord(DeleteRecordReq) returns (DeleteRecordRsp) {}
 }
 
@@ -15,6 +16,14 @@ message Book {
     string introduction = 5;
     int64 number = 6;
     string ISBN = 7;
+}
+
+message BorrowRecord {
+    int64 user_id = 1;
+    int64 book_id = 2;
+    string borrow_date = 3;
+    string back_date = 4;
+    int64 status = 5; // 1-期限内未归还 2-超过期限未归还 3-已归还
 }
 
 message BorrowBookReq {
@@ -38,9 +47,18 @@ message ReturnBookRsp {
     string msg = 2;
 }
 
+message GetBorrowHistoryReq {
+    int64 user_id = 1;
+}
+
+message GetBorrowHistoryRsp{
+    repeated BorrowRecord records = 1;
+}
+
 message DeleteRecordReq {
     int64 id = 1;
 }
+
 message DeleteRecordRsp{
     int64 code = 1;
     string msg = 2;

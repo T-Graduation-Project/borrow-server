@@ -23,6 +23,7 @@ func main() {
 
 	//tokenContext := metadata.NewOutgoingContext(
 	//	context.Background(), metadata.New(map[string]string{"token": token}))
+
 	// 借书
 	r, err := client.BorrowBook(
 		context.Background(), &protobuf.BorrowBookReq{UserId: 1, BookId: 2})
@@ -38,6 +39,16 @@ func main() {
 		log.Fatalf("could not greet: %v", err)
 	}
 	log.Info("####### get server Greeting response: %s", r2)
+
+	// 查询借阅记录
+	r3, err := client.GetBorrowHistory(
+		context.Background(), &protobuf.GetBorrowHistoryReq{
+			UserId: 1,
+		})
+	if err != nil {
+		log.Fatalf("could not greet: %v", err)
+	}
+	log.Info(r3.Records)
 
 	//r3, err := c.DeleteRecord(context.Background(), &protobuf.DeleteRecordReq{Id: 13})
 	//if err != nil {

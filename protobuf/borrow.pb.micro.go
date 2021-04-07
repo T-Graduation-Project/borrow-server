@@ -44,6 +44,7 @@ func NewBorrowEndpoints() []*api.Endpoint {
 type BorrowService interface {
 	BorrowBook(ctx context.Context, in *BorrowBookReq, opts ...client.CallOption) (*BorrowBookRsp, error)
 	ReturnBook(ctx context.Context, in *ReturnBookReq, opts ...client.CallOption) (*ReturnBookRsp, error)
+	GetBorrowHistory(ctx context.Context, in *GetBorrowHistoryReq, opts ...client.CallOption) (*GetBorrowHistoryRsp, error)
 	DeleteRecord(ctx context.Context, in *DeleteRecordReq, opts ...client.CallOption) (*DeleteRecordRsp, error)
 }
 
@@ -79,6 +80,16 @@ func (c *borrowService) ReturnBook(ctx context.Context, in *ReturnBookReq, opts 
 	return out, nil
 }
 
+func (c *borrowService) GetBorrowHistory(ctx context.Context, in *GetBorrowHistoryReq, opts ...client.CallOption) (*GetBorrowHistoryRsp, error) {
+	req := c.c.NewRequest(c.name, "Borrow.GetBorrowHistory", in)
+	out := new(GetBorrowHistoryRsp)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *borrowService) DeleteRecord(ctx context.Context, in *DeleteRecordReq, opts ...client.CallOption) (*DeleteRecordRsp, error) {
 	req := c.c.NewRequest(c.name, "Borrow.DeleteRecord", in)
 	out := new(DeleteRecordRsp)
@@ -94,6 +105,7 @@ func (c *borrowService) DeleteRecord(ctx context.Context, in *DeleteRecordReq, o
 type BorrowHandler interface {
 	BorrowBook(context.Context, *BorrowBookReq, *BorrowBookRsp) error
 	ReturnBook(context.Context, *ReturnBookReq, *ReturnBookRsp) error
+	GetBorrowHistory(context.Context, *GetBorrowHistoryReq, *GetBorrowHistoryRsp) error
 	DeleteRecord(context.Context, *DeleteRecordReq, *DeleteRecordRsp) error
 }
 
@@ -101,6 +113,7 @@ func RegisterBorrowHandler(s server.Server, hdlr BorrowHandler, opts ...server.H
 	type borrow interface {
 		BorrowBook(ctx context.Context, in *BorrowBookReq, out *BorrowBookRsp) error
 		ReturnBook(ctx context.Context, in *ReturnBookReq, out *ReturnBookRsp) error
+		GetBorrowHistory(ctx context.Context, in *GetBorrowHistoryReq, out *GetBorrowHistoryRsp) error
 		DeleteRecord(ctx context.Context, in *DeleteRecordReq, out *DeleteRecordRsp) error
 	}
 	type Borrow struct {
@@ -120,6 +133,10 @@ func (h *borrowHandler) BorrowBook(ctx context.Context, in *BorrowBookReq, out *
 
 func (h *borrowHandler) ReturnBook(ctx context.Context, in *ReturnBookReq, out *ReturnBookRsp) error {
 	return h.BorrowHandler.ReturnBook(ctx, in, out)
+}
+
+func (h *borrowHandler) GetBorrowHistory(ctx context.Context, in *GetBorrowHistoryReq, out *GetBorrowHistoryRsp) error {
+	return h.BorrowHandler.GetBorrowHistory(ctx, in, out)
 }
 
 func (h *borrowHandler) DeleteRecord(ctx context.Context, in *DeleteRecordReq, out *DeleteRecordRsp) error {

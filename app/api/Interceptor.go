@@ -2,15 +2,17 @@ package api
 
 //func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 //	return func(ctx context.Context, req server.Request, resp interface{}) error {
-//		meta, ok := metadata.FromIncomingContext(ctx)
+//		md, ok := metadata.FromIncomingContext(ctx)
 //		if !ok {
 //			return errors.New("no auth meta-data found in request")
 //		}
+//		var token string
+//		if val, ok := md["token"]; ok {
+//			token = val[0]
+//		} else {
+//			g.Log().Fatalf("md error")
+//		}
 //
-//		// Note this is now uppercase (not entirely sure why this is...)
-//		token := meta["Token"]
-//
-//		// Auth here
 //		authClient := userPb.NewUserServiceClient("go.micro.srv.user", client.DefaultClient)
 //		authResp, err := authClient.ValidateToken(context.Background(), &userPb.Token{
 //			Token: token,

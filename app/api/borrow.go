@@ -35,15 +35,14 @@ func (s *BorrowApi) BorrowBook(
 	}
 	// 写入借阅记录
 	borrowInfo := g.Map{
-		"book_id":   req.BookId,
-		"user_id":   req.UserId,
-		"lend_date": gtime.Date(),
+		"book_id":     req.BookId,
+		"user_id":     req.UserId,
+		"borrow_date": gtime.Date(),
 	}
 	_, err = db.Table("borrow_list").Save(borrowInfo)
 	if err != nil {
 		log.Info("SaveBorrowList failed")
 	}
-
 	// book_info 中的书本库存数量 -1
 	book, err := db.Table("book_info").Where("id=?", req.BookId).One()
 	num := book.Map()["number"].(int)
@@ -53,7 +52,6 @@ func (s *BorrowApi) BorrowBook(
 		return err
 	}
 	updateBookNumber(isbnCode, num-1)
-
 	rsp.Code = 0
 	rsp.Msg = "borrow book success"
 	return err
@@ -63,7 +61,6 @@ func (s *BorrowApi) ReturnBook(
 	ctx context.Context, req *protobuf.ReturnBookReq, rsp *protobuf.ReturnBookRsp) error {
 	rsp.Code = 1
 	rsp.Msg = "return book error"
-
 	// 检查是否存在借阅记录，存在且状态为未归还才可以还书
 	can, err := canBeBack(req.UserId, req.BookId, req.BorrowDate)
 	if err != nil {
@@ -77,13 +74,12 @@ func (s *BorrowApi) ReturnBook(
 	// 更新 borrow_list
 	res, err := db.Table("borrow_list").Data(
 		g.Map{"back_date": gtime.Date()}).Where(
-		"book_id=? AND user_id=? AND lend_date=?", req.BookId, req.UserId, req.BorrowDate).Update()
+		"book_id=? AND user_id=? AND borrow_date=?", req.BookId, req.UserId, req.BorrowDate).Update()
 	if err != nil {
 		log.Info("update borrow_list error:", err)
 		return err
 	}
 	log.Info(res)
-
 	// 修改 book_info 中的书本库存数量
 	book, err := db.Table("book_info").Where("id=?", req.BookId).One()
 	num := book.Map()["number"].(int)
@@ -92,6 +88,29 @@ func (s *BorrowApi) ReturnBook(
 
 	rsp.Code = 0
 	rsp.Msg = "return book success"
+	return err
+}
+
+func (s *BorrowApi) GetBorrowHistory(
+	ctx context.Context, req *protobuf.GetBorrowHistoryReq, rsp *protobuf.GetBorrowHistoryRsp) error {
+	err := db.Table("borrow_list").Where("user_id=?", req.UserId).Scan(&rsp.Records)
+	if err != nil {
+		return err
+	}
+	for _, record := range rsp.Records {
+		if record.BackDate == "" {
+			now := gtime.Now()
+			deadline := gtime.NewFromStr(record.BorrowDate).AddDate(0, 0, 5)
+			if now.Before(deadline) {
+				record.Status = 1 // 超时未归还
+			} else {
+				record.Status = 2 // 未归还
+			}
+		} else {
+			record.Status = 3 // 已归还
+		}
+	}
+	log.Info(rsp)
 	return err
 }
 
@@ -129,9 +148,9 @@ func canBeBorrowed(userId int64, bookId int64) (bool, error) {
 }
 
 // 检查是否可归还：存在记录且未归还，即 back_date 为空
-func canBeBack(userId int64, bookId int64, lendDate string) (bool, error) {
+func canBeBack(userId int64, bookId int64, borrowDate string) (bool, error) {
 	record, err := db.Table("borrow_list").Where(
-		"book_id=? AND user_id=? AND lend_date=?", bookId, userId, lendDate).One()
+		"book_id=? AND user_id=? AND borrow_date=?", bookId, userId, borrowDate).One()
 	log.Info("has record:", record)
 	if err != nil {
 		return false, err
