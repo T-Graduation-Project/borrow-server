@@ -12,12 +12,16 @@ var (
 )
 
 func main() {
+	borrowApi := &api.BorrowApi{}
+	borrowApi.InitClient()
+
 	server := micro.NewService(
 		micro.Name("borrow"),
 		micro.Version("latest"),
 	)
 	server.Init()
-	protobuf.RegisterBorrowHandler(server.Server(), new(api.BorrowApi))
+	protobuf.RegisterBorrowHandler(server.Server(), borrowApi)
+
 	if err := server.Run(); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

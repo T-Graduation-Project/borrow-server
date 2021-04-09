@@ -11,18 +11,24 @@ import (
 	"github.com/micro/go-micro/v2"
 )
 
-type BorrowApi struct{}
+type BorrowApi struct {
+	bookClient bookPb.BooksService
+}
 
 var (
 	db  = g.DB("default")
 	log = glog.New()
 )
 
+func (s *BorrowApi) InitClient() {
+	service := micro.NewService(micro.Name("book.borrow.client"))
+	s.bookClient = bookPb.NewBooksService("book", service.Client())
+}
+
 func (s *BorrowApi) BorrowBook(
 	ctx context.Context, req *protobuf.BorrowBookReq, rsp *protobuf.BorrowBookRsp) error {
 	rsp.Code = 1
 	rsp.Msg = "borrow book error"
-
 	// 检查是否有重复的借阅记录
 	can, err := canBeBorrowed(req.UserId, req.BookId)
 	if err != nil {
@@ -51,7 +57,7 @@ func (s *BorrowApi) BorrowBook(
 		rsp.Msg = "The number of this book is 0"
 		return err
 	}
-	updateBookNumber(isbnCode, num-1)
+	s.updateBookNumber(isbnCode, num-1)
 	rsp.Code = 0
 	rsp.Msg = "borrow book success"
 	return err
@@ -84,8 +90,7 @@ func (s *BorrowApi) ReturnBook(
 	book, err := db.Table("book_info").Where("id=?", req.BookId).One()
 	num := book.Map()["number"].(int)
 	isbnCode := book.Map()["ISBN"].(string)
-	updateBookNumber(isbnCode, num+1)
-
+	s.updateBookNumber(isbnCode, num+1)
 	rsp.Code = 0
 	rsp.Msg = "return book success"
 	return err
@@ -163,12 +168,7 @@ func canBeBack(userId int64, bookId int64, borrowDate string) (bool, error) {
 	return true, err
 }
 
-func updateBookNumber(isbnCode string, bookNum int) {
-	service := micro.NewService(
-		micro.Name("book.borrow.client"),
-	)
-	service.Init()
-	bookClient := bookPb.NewBooksService("book", service.Client())
+func (s *BorrowApi) updateBookNumber(isbnCode string, bookNum int) {
 	updateBooksReq := &bookPb.UpdateBooksReq{
 		Books: []*bookPb.Book{
 			{
@@ -177,7 +177,7 @@ func updateBookNumber(isbnCode string, bookNum int) {
 			},
 		},
 	}
-	rsp, err := bookClient.UpdateBooks(context.Background(), updateBooksReq)
+	rsp, err := s.bookClient.UpdateBooks(context.Background(), updateBooksReq)
 	if err != nil {
 		log.Fatal("remote update book number error", err)
 	}

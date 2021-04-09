@@ -8,10 +8,6 @@ import (
 	"github.com/micro/go-micro/v2"
 )
 
-const (
-	token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VybmFtZSI6InRlc3QiLCJQYXNzd29yZCI6InRlc3QiLCJleHAiOjE2MTc1MjgyODMsImlzcyI6InRva2VuX3NlcnZpY2UifQ.O3iYnyFfLWbpKLyO74LZbsQoQg-56zSlxwcSsm2BT5E"
-)
-
 var (
 	log = g.Log()
 )
@@ -20,9 +16,6 @@ func main() {
 	service := micro.NewService(micro.Name("borrow.client"))
 	service.Init()
 	client := protobuf.NewBorrowService("borrow", service.Client())
-
-	//tokenContext := metadata.NewOutgoingContext(
-	//	context.Background(), metadata.New(map[string]string{"token": token}))
 
 	// 借书
 	r, err := client.BorrowBook(
