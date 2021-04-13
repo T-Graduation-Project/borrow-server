@@ -6,6 +6,8 @@ import (
 	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/os/gtime"
 	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-plugins/registry/etcdv3/v2"
 )
 
 var (
@@ -13,8 +15,12 @@ var (
 )
 
 func main() {
-	service := micro.NewService(micro.Name("borrow.client"))
-	service.Init()
+	service := micro.NewService(
+		micro.Name("borrow.client"),
+		micro.Registry(etcdv3.NewRegistry(
+			registry.Addrs(g.Cfg().GetString("registry_addr")),
+		)),
+	)
 	client := protobuf.NewBorrowService("borrow", service.Client())
 
 	// 借书

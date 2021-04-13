@@ -9,6 +9,8 @@ import (
 	"github.com/gogf/gf/os/gtime"
 	"github.com/gogf/gf/util/gconv"
 	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-plugins/registry/etcdv3/v2"
 )
 
 type BorrowApi struct {
@@ -21,7 +23,12 @@ var (
 )
 
 func (s *BorrowApi) InitClient() {
-	service := micro.NewService(micro.Name("book.borrow.client"))
+	service := micro.NewService(
+		micro.Name("book.borrow.client"),
+		micro.Registry(etcdv3.NewRegistry(
+			registry.Addrs(g.Cfg().GetString("registry_addr")),
+		)),
+	)
 	s.bookClient = bookPb.NewBooksService("book", service.Client())
 }
 
