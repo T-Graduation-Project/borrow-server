@@ -5,6 +5,8 @@ import (
 	"github.com/T-Graduation-Project/borrow-server/protobuf"
 	"github.com/gogf/gf/frame/g"
 	"github.com/micro/go-micro/v2"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-plugins/registry/etcdv3/v2"
 )
 
 var (
@@ -17,7 +19,9 @@ func main() {
 
 	server := micro.NewService(
 		micro.Name("borrow"),
-		micro.Version("latest"),
+		micro.Registry(etcdv3.NewRegistry(
+			registry.Addrs(g.Cfg().GetString("registry_addr")),
+		)),
 	)
 	server.Init()
 	protobuf.RegisterBorrowHandler(server.Server(), borrowApi)

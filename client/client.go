@@ -18,7 +18,7 @@ func main() {
 	service := micro.NewService(
 		micro.Name("borrow.client"),
 		micro.Registry(etcdv3.NewRegistry(
-			registry.Addrs(g.Cfg().GetString("registry_addr")),
+			registry.Addrs("121.5.238.116:2379"),
 		)),
 	)
 	client := protobuf.NewBorrowService("borrow", service.Client())
